@@ -1,7 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import "./Auth.scss";
 import LoginImage from "./login.jpg";
-import { Link, useHistory } from "react-router-dom";
 import { publicFetch } from "../utils/fetch";
 import { toast } from "react-toastify";
 
@@ -11,7 +10,6 @@ function Login() {
 	const [usernameError, setUsernameError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
 
-	const history = useHistory();
 	const validate = () => {
 		if (email === "") {
 			setUsernameError("Email is Required");
@@ -78,9 +76,6 @@ function Login() {
 							Login
 						</button>
 					</form>
-					<p>
-						Click <Link to="/register">Here</Link> to register
-					</p>
 				</div>
 			</div>
 			<div
