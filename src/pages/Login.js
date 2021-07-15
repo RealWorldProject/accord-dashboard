@@ -50,7 +50,7 @@ function Login() {
 			<div className="auth-container__content">
 				<div className="content">
 					<h1 className="heading">Accord</h1>
-					<p>Login for Divine Experience</p>
+					<p>Administrator Dashboard</p>
 					<form onSubmit={handleSubmit}>
 						<div className="form-g">
 							<label htmlFor="username">Email:</label>
