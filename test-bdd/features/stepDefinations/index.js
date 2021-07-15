@@ -24,7 +24,7 @@ Given("Test login functionality", { timeout: 30000 }, async function () {
   await driver.sleep(delay);
   await driver.findElement(By.id("loginBtn")).click();
 
-  await driver.wait(until.elementLocated(toast.success), 30000);
-  expect(await driver.wait(until.elementLocated(toast.success)));
+  await driver.wait(until.elementLocated(By.id("ry8iyo3bl")), 300);
+  expect(await driver.wait(until.elementLocated(By.id("ry8iyo3bl"))));
   // await driver.quit();
 });
