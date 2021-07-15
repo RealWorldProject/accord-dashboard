@@ -3,12 +3,18 @@ import "./Auth.scss";
 import LoginImage from "./login.jpg";
 import { publicFetch } from "../utils/fetch";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "../redux/slices/user.slice";
 
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const [usernameError, setUsernameError] = useState("");
 	const [passwordError, setPasswordError] = useState("");
+
+	// redux
+	const user = useSelector((state) => state.user);
+	const dispatch = useDispatch();
 
 	const validate = () => {
 		if (email === "") {
@@ -35,10 +41,9 @@ function Login() {
 					"/api/v1/user/login",
 					data
 				);
-
-				// go to login
-				// history.replace("/");
-				toast.success(response.data.token);
+				localStorage.setItem("token", response.data.token);
+				dispatch(setToken(response.data.token));
+				toast.success(response.data.message);
 			} catch (error) {
 				console.log(error);
 				toast.error(error.response.data.message);
