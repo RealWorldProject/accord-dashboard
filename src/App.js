@@ -8,14 +8,14 @@ import Login from "./pages/Login";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import DashboardSideBar from "./components/DashboardSideBar";
-import { useState } from "react";
+import { useSelector } from "react-redux";
 
 function App() {
-	const [isAuth, setIsAuth] = useState(false);
+	const user = useSelector((state) => state.user);
 	return (
 		<div className="App">
 			<Router>
-				{isAuth ? <DashboardSideBar /> : <PublicRoutes />}
+				{user.token !== "" ? <DashboardSideBar /> : <PublicRoutes />}
 				<ToastContainer position="top-center" />
 			</Router>
 		</div>
@@ -31,18 +31,5 @@ const PublicRoutes = () => {
 		</Switch>
 	);
 };
-function PrivateRoutes() {
-	return (
-		<div className="App">
-			<Switch>
-				<Route exact path="/login" component={Login} />
-				<Route exact path="/dashboard" component={DashboardSideBar} />
-				<Route path="*" exact>
-					<Redirect to="/dashboard" />
-				</Route>
-			</Switch>
-		</div>
-	);
-}
 
 export default App;
