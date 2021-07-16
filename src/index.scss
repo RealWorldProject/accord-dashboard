@@ -70,3 +70,27 @@ body {
 	font-size: 0.8rem;
 	color: red;
 }
+.dropzone {
+	text-align: center;
+	padding: 20px;
+	border: 3px dashed #eeeeee;
+	background-color: #fafafa;
+	color: #bdbdbd;
+}
+
+.previewDiv {
+	margin-top: 20px;
+	position: relative;
+	width: 200px;
+
+	.previewButton {
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+.previewImage {
+	width: 200px;
+	height: 200px;
+	background-size: cover;
+}
