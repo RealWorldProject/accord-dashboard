@@ -21,10 +21,9 @@ Given("Test login functionality", { timeout: 30000 }, async function () {
   await driver.get("http://localhost:3000/login");
   await driver.findElement(By.id("username")).sendKeys("daya@fattepur.com");
   await driver.findElement(By.id("password")).sendKeys("mangocake");
-  await driver.sleep(delay);
   await driver.findElement(By.id("loginBtn")).click();
 
-  await driver.wait(until.elementLocated(By.id("ry8iyo3bl")), 300);
-  expect(await driver.wait(until.elementLocated(By.id("ry8iyo3bl"))));
+  await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6')), 300);
+  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6'))));
   // await driver.quit();
 });
