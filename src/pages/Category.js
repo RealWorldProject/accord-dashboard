@@ -49,8 +49,14 @@ function Category() {
 	};
 
 	const columns = [
-		"category",
-		"slug",
+		{
+			name: "category",
+			label: "Category",
+		},
+		{
+			name: "slug",
+			label: "Slug",
+		},
 		{
 			name: "Image",
 			options: {
@@ -68,7 +74,7 @@ function Category() {
 			},
 		},
 		{
-			name: "Actions",
+			name: "Edit",
 			options: {
 				filter: true,
 				sort: false,
@@ -113,7 +119,11 @@ function Category() {
 				<AddIcon />
 			</Fab>
 
-			<AddEditCategoryDialog open={addOpen} setOpen={setAddOpen} />
+			<AddEditCategoryDialog
+				open={addOpen}
+				setOpen={setAddOpen}
+				editOpen={false}
+			/>
 			{editOpen ? (
 				<AddEditCategoryDialog
 					open={editOpen}
@@ -122,6 +132,7 @@ function Category() {
 					slugData={editData.slug}
 					imageData={editData.image}
 					id={editData._id}
+					editOpen={true}
 				/>
 			) : (
 				""
