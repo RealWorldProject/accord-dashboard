@@ -34,6 +34,36 @@ export const addNewCategory = createAsyncThunk(
 	}
 );
 
+export const editCategory = createAsyncThunk(
+	"category/editCategory",
+	async (category) => {
+		try {
+			console.log(category);
+			let image = category.image;
+			if (!category.sameImage) {
+				const imageResponse = await privateFetch.post(
+					"/api/v1/upload",
+					{
+						data: category.image,
+					}
+				);
+				image = imageResponse.data.url;
+			}
+			const categoryResponse = await privateFetch.put(
+				`/api/v1/categories/${category.id}`,
+				{
+					category: category.category,
+					slug: category.slug,
+					image,
+				}
+			);
+			return categoryResponse.data;
+		} catch (error) {
+			return error.response.data;
+		}
+	}
+);
+
 const categorySlice = createSlice({
 	name: "category",
 	initialState: {
@@ -42,6 +72,7 @@ const categorySlice = createSlice({
 		page: 0,
 		status: "",
 		addStatus: "",
+		editStatus: "",
 		message: "",
 	},
 	extraReducers: {
@@ -68,6 +99,20 @@ const categorySlice = createSlice({
 		},
 		[addNewCategory.rejected]: (state, action) => {
 			state.addStatus = "FAILED";
+			console.log(action);
+		},
+		[editCategory.pending]: (state, action) => {
+			state.editStatus = "LOADING";
+		},
+		[editCategory.fulfilled]: (state, { payload }) => {
+			state.data = state.data.map((data) => {
+				if (data._id === payload.result._id) return payload.result;
+				else return data;
+			});
+			state.editStatus = "SUCCESS";
+		},
+		[editCategory.rejected]: (state, action) => {
+			state.editStatus = "FAILED";
 			console.log(action);
 		},
 	},

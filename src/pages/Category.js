@@ -67,58 +67,53 @@ function Category() {
   const handleClickOpen = () => {
     setAddOpen(true);
   };
-
-  const onDeleteBtnClick = () => {
-    setDeleteConfirmPopup(true);
-  };
-
-  const onNoBtnClick = () => {
-    setDeleteConfirmPopup(false);
-  };
-
-  const onYesBtnClick = () => {
-    // code can be written here for deleting an item
-  };
-
-  const columns = [
-    "category",
-    "slug",
-    {
-      name: "Image",
-      options: {
-        customBodyRender: (value, tableMeta, updatedValue) => {
-          return (
-            <div>
-              <img
-                src={categories.data[tableMeta.rowIndex].image}
-                style={{ width: "40px", height: "40px" }}
-                alt=""
-              />
-            </div>
-          );
-        },
-      },
-    },
-    {
-      name: "Actions",
-      options: {
-        filter: true,
-        sort: false,
-        customBodyRender: (value, tableMeta, updateValue) => {
-          return (
-            <div>
-              <Button
-                variant="outlined"
-                color="primary"
-                className={classes.margin}
-                onClick={() => {
-                  setEditData(categories.data[tableMeta.rowIndex]);
-                  setEditOpen(true);
-                }}
-              >
-                Edit
-              </Button>
-              <Button
+  
+	const columns = [
+		{
+			name: "category",
+			label: "Category",
+		},
+		{
+			name: "slug",
+			label: "Slug",
+		},
+		{
+			name: "Image",
+			options: {
+				customBodyRender: (value, tableMeta, updatedValue) => {
+					return (
+						<div>
+							<img
+								src={categories.data[tableMeta.rowIndex].image}
+								style={{ width: "40px", height: "40px" }}
+								alt=""
+							/>
+						</div>
+					);
+				},
+			},
+		},
+		{
+			name: "Edit",
+			options: {
+				filter: true,
+				sort: false,
+				customBodyRender: (value, tableMeta, updateValue) => {
+					return (
+						<div>
+							<Button
+								variant="outlined"
+								color="primary"
+								onClick={() => {
+									setEditData(
+										categories.data[tableMeta.rowIndex]
+									);
+									setEditOpen(true);
+								}}
+							>
+								Edit
+							</Button>
+        <Button
                 variant="outlined"
                 color="secondary"
                 className={classes.margin}
@@ -156,12 +151,26 @@ function Category() {
                   </Button>
                 </DialogActions>
               </Dialog>
-            </div>
-          );
-        },
-      },
-    },
-  ];
+						</div>
+					);
+				},
+			},
+		},
+	];
+
+
+  const onDeleteBtnClick = () => {
+    setDeleteConfirmPopup(true);
+  };
+
+  const onNoBtnClick = () => {
+    setDeleteConfirmPopup(false);
+  };
+
+  const onYesBtnClick = () => {
+    // code can be written here for deleting an item
+  };
+  
   if (categories.status === "LOADING") {
     return <CircularProgress />;
   }
@@ -182,21 +191,27 @@ function Category() {
         <AddIcon />
       </Fab>
 
-      <AddEditCategoryDialog open={addOpen} setOpen={setAddOpen} />
-      {editOpen ? (
-        <AddEditCategoryDialog
-          open={editOpen}
-          setOpen={setEditOpen}
-          categoryData={editData.category}
-          slugData={editData.slug}
-          imageData={editData.image}
-          id={editData._id}
-        />
-      ) : (
-        ""
-      )}
-    </div>
-  );
+
+			<AddEditCategoryDialog
+				open={addOpen}
+				setOpen={setAddOpen}
+				editOpen={false}
+			/>
+			{editOpen ? (
+				<AddEditCategoryDialog
+					open={editOpen}
+					setOpen={setEditOpen}
+					categoryData={editData.category}
+					slugData={editData.slug}
+					imageData={editData.image}
+					id={editData._id}
+					editOpen={true}
+				/>
+			) : (
+				""
+			)}
+		</div>
+	);
 }
 
 export default Category;
