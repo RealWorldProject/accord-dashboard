@@ -38,7 +38,6 @@ export const editCategory = createAsyncThunk(
 	"category/editCategory",
 	async (category) => {
 		try {
-			console.log(category);
 			let image = category.image;
 			if (!category.sameImage) {
 				const imageResponse = await privateFetch.post(
