@@ -1,19 +1,33 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { privateFetch } from "../../utils/fetch";
+import { setSnackbar } from "../../redux/slices/snackbar.slice";
 
 export const getCategories = createAsyncThunk(
 	"category/getCategories",
-	async () => {
-		const response = await privateFetch.get(
-			`/api/v1/categories?page=1&limit=10`
-		);
-		return response.data;
+	async (_, { dispatch, rejectWithValue }) => {
+		try {
+			const response = await privateFetch.get(
+				`/api/v1/categories?page=1&limit=10`
+			);
+			return response.data;
+		} catch (error) {
+			console.log(error);
+			const responseMessage = error.response.data.message;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "error",
+					snackbarMessage: responseMessage,
+				})
+			);
+			return rejectWithValue(responseMessage);
+		}
 	}
 );
 
 export const addNewCategory = createAsyncThunk(
 	"category/addNewCategory",
-	async (newCategory) => {
+	async (newCategory, { rejectWithValue, dispatch }) => {
 		try {
 			const imageResponse = await privateFetch.post("/api/v1/upload", {
 				data: newCategory.image,
@@ -27,18 +41,33 @@ export const addNewCategory = createAsyncThunk(
 					image,
 				}
 			);
-			return categoryResponse.data;
+			const data = categoryResponse.data;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "success",
+					snackbarMessage: data.message,
+				})
+			);
+			return data;
 		} catch (error) {
-			return error.response.data;
+			const responseMessage = error.response.data.message;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "error",
+					snackbarMessage: responseMessage,
+				})
+			);
+			return rejectWithValue(responseMessage);
 		}
 	}
 );
 
 export const editCategory = createAsyncThunk(
 	"category/editCategory",
-	async (category) => {
+	async (category, { dispatch, rejectWithValue }) => {
 		try {
-			console.log(category);
 			let image = category.image;
 			if (!category.sameImage) {
 				const imageResponse = await privateFetch.post(
@@ -57,9 +86,57 @@ export const editCategory = createAsyncThunk(
 					image,
 				}
 			);
-			return categoryResponse.data;
+			const data = categoryResponse.data;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "success",
+					snackbarMessage: data.message,
+				})
+			);
+			return data;
 		} catch (error) {
-			return error.response.data;
+			console.log(error);
+			const responseMessage = error.response.data.message;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "error",
+					snackbarMessage: responseMessage,
+				})
+			);
+			return rejectWithValue(responseMessage);
+		}
+	}
+);
+
+export const deleteCategory = createAsyncThunk(
+	"category/deleteCategory",
+	async (category, { dispatch, rejectWithValue }) => {
+		try {
+			const categoryResponse = await privateFetch.delete(
+				`/api/v1/categories/${category.id}`
+			);
+			const data = categoryResponse.data;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "success",
+					snackbarMessage: data.message,
+				})
+			);
+			return data;
+		} catch (error) {
+			console.log(error);
+			const responseMessage = error.response.data.message;
+			dispatch(
+				setSnackbar({
+					snackbarOpen: true,
+					snackbarType: "error",
+					snackbarMessage: responseMessage,
+				})
+			);
+			return rejectWithValue(responseMessage);
 		}
 	}
 );
@@ -73,6 +150,7 @@ const categorySlice = createSlice({
 		status: "",
 		addStatus: "",
 		editStatus: "",
+		deleteStatus: "",
 		message: "",
 	},
 	extraReducers: {
@@ -113,6 +191,20 @@ const categorySlice = createSlice({
 		},
 		[editCategory.rejected]: (state, action) => {
 			state.editStatus = "FAILED";
+			console.log(action);
+		},
+		[deleteCategory.pending]: (state, action) => {
+			state.deleteStatus = "LOADING";
+		},
+		[deleteCategory.fulfilled]: (state, { payload }) => {
+			state.data = state.data.filter((data) => {
+				if (data._id === payload.result._id) return false;
+				else return true;
+			});
+			state.deleteStatus = "SUCCESS";
+		},
+		[deleteCategory.rejected]: (state, action) => {
+			state.deleteStatus = "FAILED";
 			console.log(action);
 		},
 	},

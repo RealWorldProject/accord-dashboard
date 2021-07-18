@@ -18,6 +18,7 @@ import Category from "../pages/Category";
 import HomeIcon from "@material-ui/icons/Home";
 import CategoryIcon from "@material-ui/icons/Category";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
+import CustomizedSnackbar from "./Snackbar/CustomizedSnackbar";
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -116,6 +117,7 @@ export default function DashboardSideBar() {
 						))}
 					</List>
 				</div>
+				<CustomizedSnackbar />
 			</Drawer>
 			<main className={classes.content}>
 				<Toolbar />

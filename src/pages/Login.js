@@ -38,7 +38,7 @@ function Login() {
 			const data = { email, password };
 			try {
 				const response = await publicFetch.post(
-					"/api/v1/user/login",
+					"/api/v1/admin/login",
 					data
 				);
 				localStorage.setItem("token", response.data.token);
