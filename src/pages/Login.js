@@ -3,7 +3,7 @@ import "./Auth.scss";
 import LoginImage from "./login.jpg";
 import { publicFetch } from "../utils/fetch";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setToken } from "../redux/slices/user.slice";
 
 function Login() {
@@ -13,7 +13,6 @@ function Login() {
 	const [passwordError, setPasswordError] = useState("");
 
 	// redux
-	const user = useSelector((state) => state.user);
 	const dispatch = useDispatch();
 
 	const validate = () => {
