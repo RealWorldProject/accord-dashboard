@@ -84,7 +84,11 @@ function VerifyBooks() {
 									dispatch(approveBooks({ id: bookId }));
 								}}
 							>
-								VERIFY
+								{book.acceptStatus === LOADING ? (
+									<CircularProgress size={17} />
+								) : (
+									"VERIFY"
+								)}
 							</Button>
 							<Button
 								className={classes.margin}
