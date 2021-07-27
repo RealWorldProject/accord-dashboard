@@ -6,16 +6,34 @@ import AddIcon from "@material-ui/icons/Add";
 import { useState } from "react";
 import AddEditCategoryDialog from "../components/Dialogs/AddEditCategoryDialog";
 import { useDispatch, useSelector } from "react-redux";
-import { getCategories } from "../redux/slices/category.slice";
+import { deleteCategory, getCategories } from "../redux/slices/category.slice";
 import { useEffect } from "react";
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress, Typography } from "@material-ui/core";
 import { Button } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
 		position: "fixed",
 		bottom: theme.spacing(2),
 		right: theme.spacing(2),
+	},
+	margin: {
+		marginRight: theme.spacing(1),
+	},
+	dialog: {
+		padding: theme.spacing(2),
+		position: "absolute",
+		top: theme.spacing(10),
+	},
+	dialogTitle: {
+		textAlign: "center",
+		fontFamily: "Bold",
+	},
+	dialogAction: {
+		justifyContent: "center",
 	},
 }));
 
@@ -25,6 +43,9 @@ function Category() {
 	// states
 	const [addOpen, setAddOpen] = useState(false);
 	const [editOpen, setEditOpen] = useState(false);
+	const [deleteConfirmPopup, setDeleteConfirmPopup] = useState(false);
+	const [deleteID, setDeleteID] = useState("");
+
 	const [editData, setEditData] = useState({
 		_id: "",
 		category: "",
@@ -38,19 +59,30 @@ function Category() {
 
 	useEffect(() => {
 		dispatch(getCategories());
-	}, []);
+	}, [dispatch]);
 
 	useEffect(() => {
-		console.log(editData);
-	}, [editData]);
+		if (categories.addStatus === "SUCCESS") {
+			setAddOpen(false);
+		}
+		if (categories.editStatus === "SUCCESS") {
+			setEditOpen(false);
+		}
+	}, [categories]);
 
 	const handleClickOpen = () => {
 		setAddOpen(true);
 	};
 
 	const columns = [
-		"category",
-		"slug",
+		{
+			name: "category",
+			label: "Category",
+		},
+		{
+			name: "slug",
+			label: "Slug",
+		},
 		{
 			name: "Image",
 			options: {
@@ -68,7 +100,7 @@ function Category() {
 			},
 		},
 		{
-			name: "Actions",
+			name: "Edit",
 			options: {
 				filter: true,
 				sort: false,
@@ -87,12 +119,70 @@ function Category() {
 							>
 								Edit
 							</Button>
+							<Button
+								variant="outlined"
+								color="secondary"
+								className={classes.margin}
+								onClick={() => {
+									setDeleteID(
+										categories.data[tableMeta.rowIndex]._id
+									);
+									onDeleteBtnClick();
+								}}
+							>
+								Delete
+							</Button>
+							<Dialog
+								open={deleteConfirmPopup}
+								onClose={onNoBtnClick}
+								classes={{ paper: classes.dialog }}
+							>
+								<DialogTitle className={classes.dialogTitle}>
+									<Typography variant="h6">
+										{
+											"Are you sure want to delete this item?"
+										}
+									</Typography>
+								</DialogTitle>
+								<DialogActions className={classes.dialogAction}>
+									<Button
+										onClick={onNoBtnClick}
+										variant="contained"
+										className={classes.margin}
+									>
+										No
+									</Button>
+									<Button
+										onClick={onYesBtnClick}
+										color="secondary"
+										variant="contained"
+										autoFocus
+									>
+										Yes
+									</Button>
+								</DialogActions>
+							</Dialog>
 						</div>
 					);
 				},
 			},
 		},
 	];
+
+	const onDeleteBtnClick = () => {
+		setDeleteConfirmPopup(true);
+	};
+
+	const onNoBtnClick = () => {
+		setDeleteConfirmPopup(false);
+	};
+
+	const onYesBtnClick = () => {
+		dispatch(deleteCategory({ id: deleteID }));
+		setDeleteID("");
+		setDeleteConfirmPopup(false);
+	};
+
 	if (categories.status === "LOADING") {
 		return <CircularProgress />;
 	}
@@ -113,7 +203,11 @@ function Category() {
 				<AddIcon />
 			</Fab>
 
-			<AddEditCategoryDialog open={addOpen} setOpen={setAddOpen} />
+			<AddEditCategoryDialog
+				open={addOpen}
+				setOpen={setAddOpen}
+				editOpen={false}
+			/>
 			{editOpen ? (
 				<AddEditCategoryDialog
 					open={editOpen}
@@ -122,6 +216,7 @@ function Category() {
 					slugData={editData.slug}
 					imageData={editData.image}
 					id={editData._id}
+					editOpen={true}
 				/>
 			) : (
 				""

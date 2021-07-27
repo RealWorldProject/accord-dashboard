@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,8 +9,14 @@ import slugify from "slugify";
 import Dropzone from "react-dropzone";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { addNewCategory } from "../../redux/slices/category.slice";
+import {
+	addNewCategory,
+	editCategory,
+} from "../../redux/slices/category.slice";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import categorySchema from "../../validation/category.validation";
+import { Typography } from "@material-ui/core";
+import { capitalizeFirstLetter } from "../../utils/utils";
 
 export default function AddEditCategoryDialog({
 	open,
@@ -19,10 +25,14 @@ export default function AddEditCategoryDialog({
 	slugData = "",
 	imageData = "",
 	id = "",
+	editOpen = false,
 }) {
 	const [category, setCategory] = useState(categoryData);
 	const [slug, setSlug] = useState(slugData);
 	const [image, setImage] = useState(imageData);
+	const [categoryError, setCategoryError] = useState("");
+	const [slugError, setSlugError] = useState("");
+	const [imageError, setImageError] = useState("");
 	const handleClose = () => {
 		setOpen(false);
 	};
@@ -33,19 +43,47 @@ export default function AddEditCategoryDialog({
 		setSlug(slugifiedCategory);
 	};
 	const handleDrop = (acceptedFiles) => {
+		setImageError("");
 		const selectedImage = acceptedFiles[0];
 		const fileReader = new FileReader();
 		fileReader.readAsDataURL(selectedImage);
 		fileReader.onload = (event) => {
-			console.log(event.target.result);
 			setImage(event.target.result);
 		};
 	};
 	const dispatch = useDispatch();
 	const categoryState = useSelector((state) => state.category);
 
-	const handleSubmit = () => {
-		dispatch(addNewCategory({ category, slug, image }));
+	const handleSubmit = async () => {
+		const categoryData = { category, slug, image };
+		categorySchema
+			.validate(categoryData)
+			.then((isValid) => {
+				if (editOpen) {
+					dispatch(
+						editCategory({
+							...categoryData,
+							id,
+							sameImage: imageData === image,
+						})
+					);
+				} else {
+					dispatch(addNewCategory(categoryData));
+				}
+			})
+			.catch((err) => {
+				err.errors.forEach((error) => {
+					if (error.includes("image")) {
+						setImageError(capitalizeFirstLetter(error));
+					}
+					if (error.includes("category")) {
+						setCategoryError(capitalizeFirstLetter(error));
+					}
+					if (error.includes("slug")) {
+						setSlugError(capitalizeFirstLetter(error));
+					}
+				});
+			});
 	};
 
 	return (
@@ -69,6 +107,9 @@ export default function AddEditCategoryDialog({
 						fullWidth
 						value={category}
 						onChange={handleCategoryChange}
+						error={categoryError !== ""}
+						onKeyDown={() => setCategoryError("")}
+						helperText={categoryError}
 					/>
 					<TextField
 						margin="dense"
@@ -78,6 +119,8 @@ export default function AddEditCategoryDialog({
 						variant="outlined"
 						value={slug}
 						fullWidth
+						error={slugError !== ""}
+						helperText={slugError}
 					/>
 					<Dropzone
 						onDrop={handleDrop}
@@ -95,6 +138,15 @@ export default function AddEditCategoryDialog({
 							</div>
 						)}
 					</Dropzone>
+					{imageError !== "" ? (
+						<div style={{ marginLeft: "1rem", paddingTop: "5px" }}>
+							<Typography color="error" variant="p">
+								{imageError}
+							</Typography>
+						</div>
+					) : (
+						""
+					)}
 					{image !== "" ? (
 						<div className="previewDiv">
 							<img
@@ -119,8 +171,15 @@ export default function AddEditCategoryDialog({
 				</DialogContent>
 				<DialogActions>
 					<Button onClick={handleSubmit} color="primary">
-						{categoryState.addStatus === "" ||
-						categoryState.addStatus === "SUCCESS" ? (
+						{editOpen ? (
+							categoryState.editStatus === "" ||
+							categoryState.editStatus === "SUCCESS" ? (
+								"Edit Category"
+							) : (
+								<CircularProgress size={17} />
+							)
+						) : categoryState.addStatus === "" ||
+						  categoryState.addStatus === "SUCCESS" ? (
 							"Add Category"
 						) : (
 							<CircularProgress size={17} />
