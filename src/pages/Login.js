@@ -77,7 +77,7 @@ function Login() {
 							/>
 							<span className="error">{passwordError}</span>
 						</div>
-						<button type="submit" className="button">
+						<button type="submit" id="loginBtn" className="button">
 							Login
 						</button>
 					</form>

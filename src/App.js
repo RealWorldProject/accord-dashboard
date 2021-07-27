@@ -11,7 +11,6 @@ import DashboardSideBar from "./components/DashboardSideBar";
 import { useSelector } from "react-redux";
 
 function App() {
-	// const [isAuth, setIsAuth] = useState(false);
 	const user = useSelector((state) => state.user);
 	return (
 		<div className="App">
