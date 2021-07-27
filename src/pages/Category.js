@@ -8,11 +8,9 @@ import AddEditCategoryDialog from "../components/Dialogs/AddEditCategoryDialog";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteCategory, getCategories } from "../redux/slices/category.slice";
 import { useEffect } from "react";
-import { CircularProgress, Typography } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import { Button } from "@material-ui/core";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import YesNoDialog from "../components/Dialogs/YesNoDialog";
 
 const useStyles = makeStyles((theme) => ({
 	fab: {
@@ -100,7 +98,7 @@ function Category() {
 			},
 		},
 		{
-			name: "Edit",
+			name: "Actions",
 			options: {
 				filter: true,
 				sort: false,
@@ -132,36 +130,6 @@ function Category() {
 							>
 								Delete
 							</Button>
-							<Dialog
-								open={deleteConfirmPopup}
-								onClose={onNoBtnClick}
-								classes={{ paper: classes.dialog }}
-							>
-								<DialogTitle className={classes.dialogTitle}>
-									<Typography variant="h6">
-										{
-											"Are you sure want to delete this item?"
-										}
-									</Typography>
-								</DialogTitle>
-								<DialogActions className={classes.dialogAction}>
-									<Button
-										onClick={onNoBtnClick}
-										variant="contained"
-										className={classes.margin}
-									>
-										No
-									</Button>
-									<Button
-										onClick={onYesBtnClick}
-										color="secondary"
-										variant="contained"
-										autoFocus
-									>
-										Yes
-									</Button>
-								</DialogActions>
-							</Dialog>
 						</div>
 					);
 				},
@@ -193,6 +161,9 @@ function Category() {
 				title={"Categories"}
 				data={categories.data}
 				columns={columns}
+				options={{
+					selectableRows: false,
+				}}
 			/>
 			<Fab
 				className={classes.fab}
@@ -207,6 +178,11 @@ function Category() {
 				open={addOpen}
 				setOpen={setAddOpen}
 				editOpen={false}
+			/>
+			<YesNoDialog
+				deleteConfirmPopup={deleteConfirmPopup}
+				onNoBtnClick={onNoBtnClick}
+				onYesBtnClick={onYesBtnClick}
 			/>
 			{editOpen ? (
 				<AddEditCategoryDialog
