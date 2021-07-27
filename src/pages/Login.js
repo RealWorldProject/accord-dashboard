@@ -5,6 +5,7 @@ import { publicFetch } from "../utils/fetch";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setToken } from "../redux/slices/user.slice";
+import BASE_URL from "../utils/baseUrl";
 
 function Login() {
 	const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ function Login() {
 			const data = { email, password };
 			try {
 				const response = await publicFetch.post(
-					"/api/v1/admin/login",
+					`${BASE_URL}api/v1/admin/login`,
 					data
 				);
 				localStorage.setItem("token", response.data.token);
