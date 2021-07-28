@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "cucumber-js features"
+    "test": "cucumber-js features",
+    "removeModules":"rm -rf node_modules/",
+    "installModules": "yarn install"
   },
   "keywords": [],
   "author": "",
