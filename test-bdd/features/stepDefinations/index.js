@@ -78,7 +78,24 @@ const { keys } = require("@material-ui/core/styles/createBreakpoints");
 //   // await driver.quit();
 // });
 
-Given("Test Delete Category functionality", { timeout: 50000 }, async function () {
+// Given("Test Verify Books functionality", { timeout: 50000 }, async function () {
+//   let driver = await new Builder().forBrowser("chrome").build();
+//   await driver.get("http://localhost:3000/books");
+//   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
+//   await driver.findElement(By.id("password")).sendKeys("superuser123");
+//   await driver.findElement(By.id("loginBtn")).click();
+//   await driver.sleep(delay);
+//   await driver.navigate().refresh();
+//   await driver.findElement(By.xpath('//*[@id="root"]/div/div[1]/div/div/div[2]/ul[1]/a[2]/div/div[2]/span')).click();
+//   await driver.sleep(delay);
+//   await driver.findElement(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[5]/div[2]/div/button[1]/span[1]')).click();
+
+//   await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[2]')), 300);
+//   expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[2]'))));
+//   // await driver.quit();
+// });
+
+Given("Test Reject Books functionality", { timeout: 50000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/books");
   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
@@ -88,7 +105,9 @@ Given("Test Delete Category functionality", { timeout: 50000 }, async function (
   await driver.navigate().refresh();
   await driver.findElement(By.xpath('//*[@id="root"]/div/div[1]/div/div/div[2]/ul[1]/a[2]/div/div[2]/span')).click();
   await driver.sleep(delay);
-  await driver.findElement(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[5]/div[2]/div/button[1]/span[1]')).click();
+  await driver.findElement(By.xpath('//*[@id="MUIDataTableBodyRow-6"]/td[5]/div[2]/div/button[2]/span[1]')).click();
+  await driver.findElement(By.xpath('//*[@id="rejectionMessage"]')).sendKeys("Please update your book details");
+  await driver.findElement(By.xpath('/html/body/div[2]/div[3]/div/div[3]/button[2]/span[1]')).click();
 
   await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[2]')), 300);
   expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[2]'))));
