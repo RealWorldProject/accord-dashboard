@@ -4,7 +4,6 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Typography from "@material-ui/core/Typography";
 import { Grid, makeStyles } from "@material-ui/core";
-import { Chip } from "@material-ui/core";
 import { Avatar } from "@material-ui/core";
 import { DialogActions } from "@material-ui/core";
 import { Divider } from "@material-ui/core";

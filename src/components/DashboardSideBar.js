@@ -28,6 +28,7 @@ import { useDispatch } from "react-redux";
 import { removeToken } from "../redux/slices/user.slice";
 import { useState } from "react";
 import Orders from "../pages/Orders";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
 
 const drawerWidth = 240;
 
@@ -174,7 +175,7 @@ export default function DashboardSideBar() {
 						>
 							<ListItem button>
 								<ListItemIcon>
-									<AccountBoxIcon />
+									<MonetizationOnIcon />
 								</ListItemIcon>
 								<ListItemText primary={"Orders"} />
 							</ListItem>
