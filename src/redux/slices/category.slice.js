@@ -1,11 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { privateFetch } from "../../utils/fetch";
+import { getPrivateFetch } from "../../utils/fetch";
 import { setSnackbar } from "../../redux/slices/snackbar.slice";
 
 export const getCategories = createAsyncThunk(
 	"category/getCategories",
-	async (_, { dispatch, rejectWithValue }) => {
+	async (_, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.get(
 				`/api/v1/categories?page=1&limit=10`
 			);
@@ -27,8 +28,9 @@ export const getCategories = createAsyncThunk(
 
 export const addNewCategory = createAsyncThunk(
 	"category/addNewCategory",
-	async (newCategory, { rejectWithValue, dispatch }) => {
+	async (newCategory, { rejectWithValue, dispatch, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const imageResponse = await privateFetch.post("/api/v1/upload", {
 				data: newCategory.image,
 			});
@@ -66,8 +68,9 @@ export const addNewCategory = createAsyncThunk(
 
 export const editCategory = createAsyncThunk(
 	"category/editCategory",
-	async (category, { dispatch, rejectWithValue }) => {
+	async (category, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			let image = category.image;
 			if (!category.sameImage) {
 				const imageResponse = await privateFetch.post(
@@ -112,8 +115,9 @@ export const editCategory = createAsyncThunk(
 
 export const deleteCategory = createAsyncThunk(
 	"category/deleteCategory",
-	async (category, { dispatch, rejectWithValue }) => {
+	async (category, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const categoryResponse = await privateFetch.delete(
 				`/api/v1/categories/${category.id}`
 			);

@@ -1,15 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { privateFetch } from "../../utils/fetch";
+import { getPrivateFetch } from "../../utils/fetch";
 import { FAILED, LOADING, SUCCESS } from "../../utils/status";
 import { setSnackbar } from "./snackbar.slice";
 
 export const getOrders = createAsyncThunk(
 	"order/getOrder",
-	async (_, { dispatch, rejectWithValue }) => {
+	async (_, { dispatch, rejectWithValue, getState }) => {
 		try {
 			const limit = 10;
 			const page = 1;
 
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.get(
 				`/api/v1/orders?limit=${limit}&page=${page}`
 			);

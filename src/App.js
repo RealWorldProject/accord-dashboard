@@ -5,8 +5,6 @@ import {
 	Redirect,
 } from "react-router-dom";
 import Login from "./pages/Login";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import DashboardSideBar from "./components/DashboardSideBar";
 import { useSelector } from "react-redux";
 
@@ -16,7 +14,6 @@ function App() {
 		<div className="App">
 			<Router>
 				{user.token !== "" ? <DashboardSideBar /> : <PublicRoutes />}
-				<ToastContainer position="top-center" />
 			</Router>
 		</div>
 	);

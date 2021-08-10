@@ -104,7 +104,9 @@ export default function DashboardSideBar() {
 							open={open}
 							onClose={handleClose}
 						>
-							<MenuItem onClick={handleClose}>Profile</MenuItem>
+							<MenuItem onClick={handleClose}>
+								Hello, Admin
+							</MenuItem>
 							<MenuItem onClick={() => dispatch(removeToken())}>
 								Log Out
 							</MenuItem>
@@ -141,7 +143,7 @@ export default function DashboardSideBar() {
 								<ListItemIcon>
 									<MenuBookIcon />
 								</ListItemIcon>
-								<ListItemText primary={"Verify Books"} />
+								<ListItemText primary={"Books"} />
 							</ListItem>
 						</NavLink>
 						<NavLink

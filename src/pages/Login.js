@@ -2,10 +2,10 @@ import { useState } from "react";
 import "./Auth.scss";
 import LoginImage from "./login.jpg";
 import { publicFetch } from "../utils/fetch";
-import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { setToken } from "../redux/slices/user.slice";
 import BASE_URL from "../utils/baseUrl";
+import { setSnackbar } from "../redux/slices/snackbar.slice";
 
 function Login() {
 	const [email, setEmail] = useState("");
@@ -43,10 +43,22 @@ function Login() {
 				);
 				localStorage.setItem("token", response.data.token);
 				dispatch(setToken(response.data.token));
-				toast.success(response.data.message);
+				dispatch(
+					setSnackbar({
+						snackbarOpen: true,
+						snackbarType: "success",
+						snackbarMessage: response.data.message,
+					})
+				);
 			} catch (error) {
 				console.log(error);
-				toast.error(error.response.data.message);
+				dispatch(
+					setSnackbar({
+						snackbarOpen: true,
+						snackbarType: "error",
+						snackbarMessage: error.response.data.message,
+					})
+				);
 			}
 		}
 	};

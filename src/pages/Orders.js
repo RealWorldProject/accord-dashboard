@@ -66,7 +66,18 @@ function Orders() {
 	];
 
 	if (order.getStatus === LOADING) {
-		return <CircularProgress />;
+		return (
+			<div
+				style={{
+					position: "absolute",
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			>
+				<CircularProgress />
+			</div>
+		);
 	}
 
 	return (

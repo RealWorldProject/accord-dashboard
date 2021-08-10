@@ -1,16 +1,17 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { privateFetch } from "../../utils/fetch";
+import { getPrivateFetch } from "../../utils/fetch";
 import { FAILED, LOADING, SUCCESS } from "../../utils/status";
 import { setSnackbar } from "./snackbar.slice";
 
 export const getBooks = createAsyncThunk(
 	"book/getBooks",
-	async (_, { dispatch, rejectWithValue }) => {
+	async (filters, { dispatch, rejectWithValue, getState }) => {
 		try {
-			const status = "PENDING";
+			const status = filters.status;
 			const limit = 10;
 			const page = 1;
 
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.get(
 				`/api/v1/book?status=${status}&limit=${limit}&page=${page}`
 			);
@@ -32,8 +33,9 @@ export const getBooks = createAsyncThunk(
 
 export const approveBooks = createAsyncThunk(
 	"book/approveBooks",
-	async (book, { dispatch, rejectWithValue }) => {
+	async (book, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.patch(
 				`/api/v1/book/accept/${book.id}`
 			);
@@ -62,8 +64,9 @@ export const approveBooks = createAsyncThunk(
 
 export const rejectBooks = createAsyncThunk(
 	"book/rejectBooks",
-	async (book, { dispatch, rejectWithValue }) => {
+	async (book, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.patch(
 				`/api/v1/book/reject/${book.id}`,
 				{ rejectionMessage: book.rejectionMessage }

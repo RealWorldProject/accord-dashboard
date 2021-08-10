@@ -1,14 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { setSnackbar } from "../../redux/slices/snackbar.slice";
-import { privateFetch } from "../../utils/fetch";
+import { getPrivateFetch } from "../../utils/fetch";
 import { FAILED, LOADING, SUCCESS } from "../../utils/status";
 
 export const getUsers = createAsyncThunk(
 	"users/getUsers",
-	async (_, { dispatch, rejectWithValue }) => {
+	async (_, { dispatch, rejectWithValue, getState }) => {
 		try {
 			const page = 1;
 			const limit = 10;
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.get(
 				`api/v1/users?page${page}&limit=${limit}`
 			);
@@ -30,8 +31,9 @@ export const getUsers = createAsyncThunk(
 
 export const suspendUsers = createAsyncThunk(
 	"users/suspendUsers",
-	async (user, { dispatch, rejectWithValue }) => {
+	async (user, { dispatch, rejectWithValue, getState }) => {
 		try {
+			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.patch(
 				`/api/v1/user/suspend/${user.id}`,
 				{ suspensionMessage: user.rejectionMessage }

@@ -9,3 +9,12 @@ export const privateFetch = Axios.create({
 		authorization: "Bearer " + localStorage.getItem("token"),
 	},
 });
+
+export const getPrivateFetch = (token) => {
+	return Axios.create({
+		baseURL: BASE_URL,
+		headers: {
+			authorization: "Bearer " + token,
+		},
+	});
+};
