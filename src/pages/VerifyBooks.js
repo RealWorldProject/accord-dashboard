@@ -9,6 +9,7 @@ import { LOADING } from "../utils/status";
 import { CircularProgress } from "@material-ui/core";
 import BookDetailsDialog from "../components/Dialogs/BookDetailsDialog";
 import RejectBookDialog from "../components/Dialogs/RejectBookDialog";
+import BookFilter from "../components/Filter/BookFilter";
 
 const useStyles = makeStyles((theme) => ({
 	margin: {
@@ -24,12 +25,13 @@ function VerifyBooks() {
 	const [bookID, setBookID] = useState("");
 	const [detailsOpen, setDetailsOpen] = useState(false);
 	const [rejectConfirmDialog, setRejectConfirmDialog] = useState(false);
+	const [status, setStatus] = useState("PENDING");
 	const book = useSelector((state) => state.book);
 	const dispatch = useDispatch();
 
 	useEffect(() => {
-		dispatch(getBooks());
-	}, [dispatch]);
+		dispatch(getBooks({ status }));
+	}, [dispatch, status]);
 
 	const columns = [
 		{
@@ -110,8 +112,26 @@ function VerifyBooks() {
 		},
 	];
 
+	const options = {
+		selectableRows: false,
+		customToolbar: () => {
+			return <BookFilter status={status} setStatus={setStatus} />;
+		},
+	};
+
 	if (book.getStatus === LOADING) {
-		return <CircularProgress />;
+		return (
+			<div
+				style={{
+					position: "absolute",
+					left: "50%",
+					top: "50%",
+					transform: "translate(-50%, -50%)",
+				}}
+			>
+				<CircularProgress />
+			</div>
+		);
 	}
 
 	return (
@@ -120,9 +140,7 @@ function VerifyBooks() {
 				columns={columns}
 				title={"Books"}
 				data={book.data}
-				options={{
-					selectableRows: false,
-				}}
+				options={options}
 			/>
 			{viewBookData.name ? (
 				<BookDetailsDialog

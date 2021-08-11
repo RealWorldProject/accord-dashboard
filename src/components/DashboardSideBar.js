@@ -9,16 +9,27 @@ import Divider from "@material-ui/core/Divider";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import InboxIcon from "@material-ui/icons/MoveToInbox";
-import MailIcon from "@material-ui/icons/Mail";
 import { Switch, Route, Redirect, NavLink } from "react-router-dom";
 import VerifyBooks from "../pages/VerifyBooks";
 import Dashboard from "../pages/Dashboard";
 import Category from "../pages/Category";
+import Users from "../pages/Users";
 import HomeIcon from "@material-ui/icons/Home";
 import CategoryIcon from "@material-ui/icons/Category";
 import MenuBookIcon from "@material-ui/icons/MenuBook";
 import CustomizedSnackbar from "./Snackbar/CustomizedSnackbar";
+import AccountBoxIcon from "@material-ui/icons/AccountBox";
+import { Menu } from "@material-ui/core";
+import { MenuItem } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
+import { Grid } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import { removeToken } from "../redux/slices/user.slice";
+import { useState } from "react";
+import Orders from "../pages/Orders";
+import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
@@ -46,15 +57,61 @@ const useStyles = makeStyles((theme) => ({
 
 export default function DashboardSideBar() {
 	const classes = useStyles();
+	const [anchorEl, setAnchorEl] = useState(null);
+	const open = Boolean(anchorEl);
+	const dispatch = useDispatch();
+	const handleMenu = (event) => {
+		setAnchorEl(event.currentTarget);
+	};
 
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
 			<AppBar position="fixed" className={classes.appBar}>
 				<Toolbar>
-					<Typography variant="h6" noWrap>
-						Accord Dashboard
-					</Typography>
+					<Grid container>
+						<Grid item sm={11}>
+							<Typography variant="h6" noWrap>
+								Accord Dashboard
+							</Typography>
+						</Grid>
+					</Grid>
+					<div>
+						<IconButton
+							aria-label="account of current user"
+							aria-controls="menu-appbar"
+							aria-haspopup="true"
+							onClick={handleMenu}
+							color="inherit"
+						>
+							<AccountCircle />
+						</IconButton>
+						<Menu
+							id="menu-appbar"
+							anchorEl={anchorEl}
+							anchorOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							keepMounted
+							transformOrigin={{
+								vertical: "top",
+								horizontal: "right",
+							}}
+							open={open}
+							onClose={handleClose}
+						>
+							<MenuItem onClick={handleClose}>
+								Hello, Admin
+							</MenuItem>
+							<MenuItem onClick={() => dispatch(removeToken())}>
+								Log Out
+							</MenuItem>
+						</Menu>
+					</div>
 				</Toolbar>
 			</AppBar>
 			<Drawer
@@ -86,7 +143,7 @@ export default function DashboardSideBar() {
 								<ListItemIcon>
 									<MenuBookIcon />
 								</ListItemIcon>
-								<ListItemText primary={"Verify Books"} />
+								<ListItemText primary={"Books"} />
 							</ListItem>
 						</NavLink>
 						<NavLink
@@ -103,18 +160,28 @@ export default function DashboardSideBar() {
 					</List>
 					<Divider />
 					<List>
-						{["Users", "All Books", "Spam"].map((text, index) => (
-							<ListItem button key={text}>
+						<NavLink
+							to="/users"
+							style={{ textDecoration: "none", color: "inherit" }}
+						>
+							<ListItem button>
 								<ListItemIcon>
-									{index % 2 === 0 ? (
-										<InboxIcon />
-									) : (
-										<MailIcon />
-									)}
+									<AccountBoxIcon />
 								</ListItemIcon>
-								<ListItemText primary={text} />
+								<ListItemText primary={"Users"} />
 							</ListItem>
-						))}
+						</NavLink>
+						<NavLink
+							to="/orders"
+							style={{ textDecoration: "none", color: "inherit" }}
+						>
+							<ListItem button>
+								<ListItemIcon>
+									<MonetizationOnIcon />
+								</ListItemIcon>
+								<ListItemText primary={"Orders"} />
+							</ListItem>
+						</NavLink>
 					</List>
 				</div>
 				<CustomizedSnackbar />
@@ -126,6 +193,8 @@ export default function DashboardSideBar() {
 					<Route exact path="/books" component={VerifyBooks} />
 					<Route exact path="/dashboard" component={Dashboard} />
 					<Route exact path="/categories" component={Category} />
+					<Route exact path="/users" component={Users} />
+					<Route exact path="/orders" component={Orders} />
 					<Route path="*" exact>
 						<Redirect to="/dashboard" />
 					</Route>
