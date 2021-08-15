@@ -149,7 +149,7 @@ const { keys } = require("@material-ui/core/styles/createBreakpoints");
 //   // await driver.quit();
 // });
 
-Given("Test View Orders functionality", { timeout: 50000 }, async function () {
+Given("Test Suspend Useer functionality", { timeout: 50000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/users");
   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
