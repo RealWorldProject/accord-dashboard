@@ -131,25 +131,25 @@ const { keys } = require("@material-ui/core/styles/createBreakpoints");
 //   // await driver.quit();
 // });
 
-// Given("Test View Orders functionality", { timeout: 50000 }, async function () {
-//   let driver = await new Builder().forBrowser("chrome").build();
-//   await driver.get("http://localhost:3000/books");
-//   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
-//   await driver.findElement(By.id("password")).sendKeys("superuser123");
-//   await driver.findElement(By.id("loginBtn")).click();
-//   await driver.sleep(delay);
-//   await driver.navigate().refresh();
-//   await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/div[2]/ul[1]/a[2]/div/div[2]/span')).click();
-//   await driver.sleep(delay);
-//   await driver.findElement(By.xpath('//*[@id="root"]/div/div/main/div[2]/div/div[1]/div[2]/div/fieldset/div/label[2]/span[1]/span[1]/input')).click();
-//   await driver.sleep(delay);
+Given("Test Sort Book functionality", { timeout: 50000 }, async function () {
+  let driver = await new Builder().forBrowser("chrome").build();
+  await driver.get("http://localhost:3000/books");
+  await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
+  await driver.findElement(By.id("password")).sendKeys("superuser123");
+  await driver.findElement(By.id("loginBtn")).click();
+  await driver.sleep(delay);
+  await driver.navigate().refresh();
+  await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/div[2]/ul[1]/a[2]/div/div[2]/span')).click();
+  await driver.sleep(delay);
+  await driver.findElement(By.xpath('//*[@id="root"]/div/div/main/div[2]/div/div[1]/div[2]/div/fieldset/div/label[2]/span[1]/span[1]/input')).click();
+  await driver.sleep(delay);
 
-//   await driver.wait(until.elementLocated(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[3]/div[2]')), 300);
-//   expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[3]/div[2]'))));
-//   // await driver.quit();
-// });
+  await driver.wait(until.elementLocated(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[3]/div[2]')), 300);
+  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="MUIDataTableBodyRow-0"]/td[3]/div[2]'))));
+  // await driver.quit();
+});
 
-Given("Test Suspend Useer functionality", { timeout: 50000 }, async function () {
+Given("Test Suspend User functionality", { timeout: 50000 }, async function () {
   let driver = await new Builder().forBrowser("chrome").build();
   await driver.get("http://localhost:3000/users");
   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
