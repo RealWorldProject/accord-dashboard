@@ -12,7 +12,7 @@ export const getOrders = createAsyncThunk(
 
 			const privateFetch = getPrivateFetch(getState().user.token);
 			const response = await privateFetch.get(
-				`/api/v1/orders?limit=${limit}&page=${page}`
+				`/api/v1/admin/orders?limit=${limit}&page=${page}`
 			);
 			return response.data;
 		} catch (error) {
