@@ -14,6 +14,7 @@ import { TableRow } from "@material-ui/core";
 import { TableCell } from "@material-ui/core";
 import { TableBody } from "@material-ui/core";
 import ShowOrderTest from "../Text/ShowOrderTest";
+import { Chip } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	margin: {
@@ -21,6 +22,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	left: {
 		paddingLeft: theme.spacing(1),
+	},
+	mleft: {
+		marginLeft: theme.spacing(1),
 	},
 	image: {
 		width: "262px",
@@ -53,6 +57,19 @@ export default function OrderDetailsDialog({
 			>
 				<DialogTitle id="customized-dialog-title" onClose={handleClose}>
 					Order Details
+					{order.status === "PENDING" ? (
+						<Chip
+							label="PENDING"
+							color="primary"
+							className={classes.mleft}
+						/>
+					) : (
+						<Chip
+							label="CANCELLED"
+							color="secondary"
+							className={classes.mleft}
+						/>
+					)}
 				</DialogTitle>
 				<DialogContent dividers>
 					<Grid container>
@@ -69,10 +86,7 @@ export default function OrderDetailsDialog({
 						</Grid>
 						<Grid item md={6}>
 							<Typography>User Info</Typography>
-							<ShowOrderTest
-								name="Ordered By"
-								data={order.fullName}
-							/>
+							<ShowOrderTest name="Name" data={order.fullName} />
 							<ShowOrderTest
 								name="Contact Number"
 								data={order.phoneNumber}
