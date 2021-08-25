@@ -29,7 +29,7 @@ const statSlice = createSlice({
 	name: "stats",
 	initialState: {
 		data: [],
-		getStatus: "",
+		getStatus: LOADING,
 	},
 	extraReducers: {
 		[getStats.pending]: (state, action) => {

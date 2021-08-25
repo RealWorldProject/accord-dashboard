@@ -22,13 +22,13 @@ import AccountBoxIcon from "@material-ui/icons/AccountBox";
 import { Menu } from "@material-ui/core";
 import { MenuItem } from "@material-ui/core";
 import { IconButton } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
 import { Grid } from "@material-ui/core";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { removeToken } from "../redux/slices/user.slice";
 import { useState } from "react";
 import Orders from "../pages/Orders";
 import MonetizationOnIcon from "@material-ui/icons/MonetizationOn";
+import { Avatar } from "@material-ui/core";
 
 const drawerWidth = 240;
 
@@ -67,6 +67,7 @@ export default function DashboardSideBar() {
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+	const userState = useSelector((state) => state.user);
 	return (
 		<div className={classes.root}>
 			<CssBaseline />
@@ -87,7 +88,10 @@ export default function DashboardSideBar() {
 							onClick={handleMenu}
 							color="inherit"
 						>
-							<AccountCircle />
+							<Avatar
+								alt="admin profile"
+								src={userState.user.image}
+							/>
 						</IconButton>
 						<Menu
 							id="menu-appbar"
@@ -105,7 +109,7 @@ export default function DashboardSideBar() {
 							onClose={handleClose}
 						>
 							<MenuItem onClick={handleClose}>
-								Hello, Admin
+								Hello, {userState.user.fullName}
 							</MenuItem>
 							<MenuItem onClick={() => dispatch(removeToken())}>
 								Log Out

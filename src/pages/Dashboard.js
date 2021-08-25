@@ -155,7 +155,7 @@ function Dashboard() {
 			</Grid>
 			<div style={{ marginTop: "20px" }}>
 				<Grid container spacing={1} justifyContent="space-between">
-					<Grid item xs="3">
+					<Grid item xs="4">
 						<BookPieChart bookData={statsState.data.bookData} />
 					</Grid>
 					<Grid item xs="4">
@@ -163,7 +163,7 @@ function Dashboard() {
 							bookData={statsState.data.booksWithCategoryName}
 						/>
 					</Grid>
-					<Grid item xs="3">
+					<Grid item xs="4">
 						<UserPieChart bookData={statsState.data.userData} />
 					</Grid>
 				</Grid>
