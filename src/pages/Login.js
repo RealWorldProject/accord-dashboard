@@ -42,10 +42,6 @@ function Login() {
 					data
 				);
 				localStorage.setItem("token", response.data.token);
-				localStorage.setItem(
-					"user",
-					JSON.stringify(response.data.result)
-				);
 				dispatch(setToken(response.data.token));
 				dispatch(setUser(response.data.result));
 				dispatch(

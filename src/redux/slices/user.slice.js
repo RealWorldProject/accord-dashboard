@@ -4,7 +4,7 @@ const userSlice = createSlice({
 	name: "user",
 	initialState: {
 		token: localStorage.getItem("token") || "",
-		user: JSON.parse(localStorage.getItem("user")),
+		user: JSON.parse(localStorage.getItem("user")) || {},
 	},
 	reducers: {
 		setToken: (state, action) => {
@@ -15,6 +15,8 @@ const userSlice = createSlice({
 			return { user: {}, token: "" };
 		},
 		setUser: (state, action) => {
+			console.log(action.payload);
+			localStorage.setItem("user", JSON.stringify(action.payload));
 			return { ...state, user: action.payload };
 		},
 	},
