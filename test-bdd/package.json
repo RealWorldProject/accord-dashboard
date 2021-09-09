@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cucumber-js features",
-    "removeModules":"rm -rf node_modules/",
+    "removeModules": "rm -rf node_modules/",
     "installModules": "yarn install"
   },
   "keywords": [],
@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "chai": "^4.2.0",
-    "chromedriver": "^91.0.1",
+    "chromedriver": "^93.0.1",
+    "msedgedriver": "^91.0.0",
     "npm-check-updates": "^11.8.3",
-    "selenium-webdriver": "^4.0.0-alpha.8"
+    "selenium-webdriver": "^4.0.0-alpha.8",
+    "webdriver": "^7.12.2"
   }
 }

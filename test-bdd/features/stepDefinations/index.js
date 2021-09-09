@@ -5,14 +5,16 @@ const { delay } = require("../utils/delay");
 const { keys } = require("@material-ui/core/styles/createBreakpoints");
 
 Given("Test login functionality", { timeout: 30000 }, async function () {
-  let driver = await new Builder().forBrowser("chrome").build();
+  let driver = await new Builder().forBrowser("MicrosoftEdge").build();
   await driver.get("http://localhost:3000/login");
-  await driver.findElement(By.id("username")).sendKeys("daya@fattepur.com");
-  await driver.findElement(By.id("password")).sendKeys("mangocake");
+  await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
+  await driver.findElement(By.id("password")).sendKeys("superuser123");
   await driver.findElement(By.id("loginBtn")).click();
+  await driver.sleep(delay);
+  await driver.navigate().refresh();
 
-  await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6')), 300);
-  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6'))));
+  await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/header/div/div[1]/div/h6')), 300);
+  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/header/div/div[1]/div/h6'))));
   // await driver.quit();
 });
 
