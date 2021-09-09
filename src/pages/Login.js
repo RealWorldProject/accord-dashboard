@@ -3,7 +3,7 @@ import "./Auth.scss";
 import LoginImage from "./login.jpg";
 import { publicFetch } from "../utils/fetch";
 import { useDispatch } from "react-redux";
-import { setToken } from "../redux/slices/user.slice";
+import { setToken, setUser } from "../redux/slices/user.slice";
 import BASE_URL from "../utils/baseUrl";
 import { setSnackbar } from "../redux/slices/snackbar.slice";
 
@@ -42,7 +42,12 @@ function Login() {
 					data
 				);
 				localStorage.setItem("token", response.data.token);
+				localStorage.setItem(
+					"user",
+					JSON.stringify(response.data.result)
+				);
 				dispatch(setToken(response.data.token));
+				dispatch(setUser(response.data.result));
 				dispatch(
 					setSnackbar({
 						snackbarOpen: true,

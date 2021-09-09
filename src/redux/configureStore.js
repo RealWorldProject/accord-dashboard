@@ -3,6 +3,7 @@ import bookSlice from "./slices/book.slice";
 import categorySlice from "./slices/category.slice";
 import orderSlice from "./slices/order.slice";
 import snackbarSlice from "./slices/snackbar.slice";
+import statSlice from "./slices/stats.slice";
 import userSlice from "./slices/user.slice";
 import usersSlice from "./slices/users.slice";
 
@@ -13,6 +14,7 @@ const reducer = combineReducers({
 	book: bookSlice,
 	users: usersSlice,
 	order: orderSlice,
+	stats: statSlice,
 });
 
 const store = configureStore({
