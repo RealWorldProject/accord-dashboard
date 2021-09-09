@@ -4,17 +4,17 @@ const { Builder, By, Key, until, sleep, Browser } = require("selenium-webdriver"
 const { delay } = require("../utils/delay");
 const { keys } = require("@material-ui/core/styles/createBreakpoints");
 
-// Given("Test login functionality", { timeout: 30000 }, async function () {
-//   let driver = await new Builder().forBrowser("chrome").build();
-//   await driver.get("http://localhost:3000/login");
-//   await driver.findElement(By.id("username")).sendKeys("daya@fattepur.com");
-//   await driver.findElement(By.id("password")).sendKeys("mangocake");
-//   await driver.findElement(By.id("loginBtn")).click();
+Given("Test login functionality", { timeout: 30000 }, async function () {
+  let driver = await new Builder().forBrowser("chrome").build();
+  await driver.get("http://localhost:3000/login");
+  await driver.findElement(By.id("username")).sendKeys("daya@fattepur.com");
+  await driver.findElement(By.id("password")).sendKeys("mangocake");
+  await driver.findElement(By.id("loginBtn")).click();
 
-//   await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6')), 300);
-//   expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6'))));
-//   // await driver.quit();
-// });
+  await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6')), 300);
+  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div[1]/header/div/h6'))));
+  // await driver.quit();
+});
 
 // Given("Test Add Category functionality", { timeout: 50000 }, async function () {
 //   let driver = await new Builder().forBrowser("chrome").build();
@@ -149,23 +149,23 @@ const { keys } = require("@material-ui/core/styles/createBreakpoints");
 //   // await driver.quit();
 // });
 
-Given("Test Suspend User functionality", { timeout: 50000 }, async function () {
-  let driver = await new Builder().forBrowser("chrome").build();
-  await driver.get("http://localhost:3000/users");
-  await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
-  await driver.findElement(By.id("password")).sendKeys("superuser123");
-  await driver.findElement(By.id("loginBtn")).click();
-  await driver.sleep(delay);
-  await driver.navigate().refresh();
-  await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/div[2]/ul[2]/a[1]/div/div[2]/span')).click();
-  await driver.sleep(delay);
-  await driver.findElement(By.xpath('//*[@id="MUIDataTableBodyRow-6"]/td[3]/div[2]/div/button/span[1]')).click();
-  await driver.findElement(By.id("rejectionMessage")).sendKeys("Suspended due to malicious activities");
-  await driver.sleep(1000);
-  await driver.findElement(By.xpath('/html/body/div[3]/div[3]/div/div[3]/button[2]/span[1]')).click();
-  await driver.sleep(1000);
+// Given("Test Suspend User functionality", { timeout: 50000 }, async function () {
+//   let driver = await new Builder().forBrowser("chrome").build();
+//   await driver.get("http://localhost:3000/users");
+//   await driver.findElement(By.id("username")).sendKeys("superuser@accord.com");
+//   await driver.findElement(By.id("password")).sendKeys("superuser123");
+//   await driver.findElement(By.id("loginBtn")).click();
+//   await driver.sleep(delay);
+//   await driver.navigate().refresh();
+//   await driver.findElement(By.xpath('//*[@id="root"]/div/div/div/div/div[2]/ul[2]/a[1]/div/div[2]/span')).click();
+//   await driver.sleep(delay);
+//   await driver.findElement(By.xpath('//*[@id="MUIDataTableBodyRow-6"]/td[3]/div[2]/div/button/span[1]')).click();
+//   await driver.findElement(By.id("rejectionMessage")).sendKeys("Suspended due to malicious activities");
+//   await driver.sleep(1000);
+//   await driver.findElement(By.xpath('/html/body/div[3]/div[3]/div/div[3]/button[2]/span[1]')).click();
+//   await driver.sleep(1000);
 
-  await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/div/div/div[3]/div/div/div[2]')), 300);
-  expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/div/div/div[3]/div/div/div[2]'))));
-  // await driver.quit();
-});
+//   await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/div/div/div[3]/div/div/div[2]')), 300);
+//   expect(await driver.wait(until.elementLocated(By.xpath('//*[@id="root"]/div/div/div/div/div[3]/div/div/div[2]'))));
+//   // await driver.quit();
+// });
